@@ -62,6 +62,7 @@ export default function Sidebar() {
               alt="Logo"
               src="/images/LOGO.jpg"
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="rounded-full"
             />
           </div>
