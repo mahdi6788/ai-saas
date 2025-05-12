@@ -47,7 +47,7 @@ export default function ImagePage() {
 
       // const base64Strings = response.data.map(image => image.url)
 
-      const urls = await response.data
+      const urls = response.data.map((image:{url:string}) => image.url)
 
       setImages(urls);
       form.reset();
