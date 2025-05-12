@@ -8,9 +8,9 @@ const openai = new OpenAI({
 
 export async function POST(req: Request) {
   try {
-    const { prompt, amount = 1, resolution = "512x512" } = await req.json();
+    const { prompt, amount = 1, resolution = "1024x1024" } = await req.json();
     const { userId } = await auth();
-    if (!userId) return new NextResponse("Unathorized", { status: 401 });
+    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
     if (!prompt)
       return new NextResponse("Prompt are required", { status: 400 });
     if (!amount)
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     if (!resolution)
       return new NextResponse("Resolution are required", { status: 400 });
     if (!openai.apiKey)
-      return new NextResponse("OpenAI API key not confiqured", { status: 500 });
+      return new NextResponse("OpenAI API key not configured", { status: 500 });
 
     const result = await openai.images.generate({
       model: "gpt-image-1",
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     if (!result.data || result.data.length === 0) {
       return new NextResponse("No data returned from OpenAI", { status: 500 });
     }
-    return NextResponse.json(result.data[0]);  /// based on the openAI documentation
+    return NextResponse.json(result.data);  /// based on the openAI documentation
   } catch (error) {
     console.log("Image Error: ", error);
     return new NextResponse("Internal error", { status: 500 });
