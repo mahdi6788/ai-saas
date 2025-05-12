@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       return new NextResponse("OpenAI API key not configured", { status: 500 });
 
     const result = await openai.images.generate({
-      model: "gpt-image-1",
+      // model: "gpt-image-1",
       prompt,
       size:resolution,
       n:parseInt(amount, 10)
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     if (!result.data || result.data.length === 0) {
       return new NextResponse("No data returned from OpenAI", { status: 500 });
     }
-    return NextResponse.json(result); 
+    return NextResponse.json(result.data); 
   } catch (error) {
     console.log("Image Error: ", error);
     return new NextResponse("Internal error", { status: 500 });
