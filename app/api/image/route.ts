@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     if (!result.data || result.data.length === 0) {
       return new NextResponse("No data returned from OpenAI", { status: 500 });
     }
-    return NextResponse.json(result.data);  /// based on the openAI documentation
+    return NextResponse.json(result);  /// based on the openAI documentation
   } catch (error) {
     console.log("Image Error: ", error);
     return new NextResponse("Internal error", { status: 500 });
