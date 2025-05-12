@@ -21,11 +21,10 @@ export async function POST(req: Request) {
       return new NextResponse("OpenAI API key not configured", { status: 500 });
 
     const result = await openai.images.generate({
-      // model: "gpt-image-1",
-      model: "dall-e-3",
+      model: "gpt-image-1",
       prompt,
       size:resolution,
-      n:1,
+      n:parseInt(amount),
     });
 
     if (!result.data || result.data.length === 0) {
