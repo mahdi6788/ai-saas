@@ -47,9 +47,10 @@ export default function ImagePage() {
 
       // const base64Strings = response.data.map(image => image.url)
 
-      const urls = response.data.map((image:{url:string}) => image.url)
+      const images = await response.data
+      const b64_strings = images.map((image:{b64_json:string}) => image.b64_json)
 
-      setImages(urls);
+      setImages(b64_strings);
       form.reset();
     } catch (error) {
       console.log(error);
@@ -165,14 +166,14 @@ export default function ImagePage() {
           )}
           {/* flex-col-reverse : first show the latest message that is from bot and then newest user prompt and etc. */}
           <div className="grid grid-cols-1, md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-            {images.map((url) => (
-              <Card key={url} className="rounded-lg overflow-hidden">
+            {images.map((b64_string) => (
+              <Card key={b64_string} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
-                  <Image alt="Image" src={url} fill />
+                  <Image alt="Image" src={`data:image/png;base64,${b64_string}`} fill />
                 </div>
                 <CardFooter className="p-2">
                   <Button
-                    onClick={() => window.open(url)}
+                    onClick={() => window.open(`data:image/png;base64,${b64_string}`)}
                     variant="secondary"
                     className="w-full "
                   >
