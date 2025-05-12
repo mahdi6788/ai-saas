@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       model: "gpt-image-1",
       prompt,
       size:resolution,
-      n:parseInt(amount, 10)
+      n:amount
     });
 
     if (!result.data || result.data.length === 0) {
