@@ -22,7 +22,6 @@ export async function POST(req: Request) {
       messages,
     });
     return NextResponse.json(completion.choices[0].message);
-    // completion.then((result) => NextResponse.json(result.choices[0].message));
   } catch (error) {
     console.log("Conversation Error: ", error);
     return new NextResponse("Internal error", { status: 500 });

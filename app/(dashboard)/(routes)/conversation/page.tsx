@@ -31,16 +31,20 @@ export default function ConversationPage() {
   });
 
   const isLoading = form.formState.isSubmitting;
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const userMessage = {
         role: "user",
         content: values.prompt,
       };
+
       const newMessages = [...messages, userMessage];
+
       const response = await axios.post("/api/conversation", {
         messages: newMessages,
       });
+
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error) {
@@ -59,6 +63,7 @@ export default function ConversationPage() {
         bgColor="bg-violet-500/10"
       />
       <div className="px-4 lg:px-8">
+        {/* Form */}
         <div>
           <Form {...form}>
             <form
@@ -71,10 +76,10 @@ export default function ConversationPage() {
                   <FormItem className="col-span-12 lg:col-span-10">
                     <FormControl className="m-0 p-0">
                       <Input
+                        {...field}
                         className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
                         disabled={isLoading}
                         placeholder="Ask and talk about anything!"
-                        {...field}
                       />
                     </FormControl>
                   </FormItem>
@@ -89,6 +94,8 @@ export default function ConversationPage() {
             </form>
           </Form>
         </div>
+
+        {/* Results */}
         <div className="space-y-4 mt-4">
           {isLoading && (
             <div className="flex items-center justify-center w-full rounded-lg p-8 bg-muted">
@@ -98,7 +105,8 @@ export default function ConversationPage() {
           {messages.length === 0 && !isLoading && (
             <Empty label="No conversation started." />
           )}
-          <div className="flex flex-col-reverse gap-y-4">
+          {/* flex-col-reverse : first show the latest message that is from bot and then newest user prompt and etc. */}
+          <div className="flex flex-col gap-y-4">   
             {messages.map((message) => (
               <div
                 key={message.content}
@@ -109,7 +117,7 @@ export default function ConversationPage() {
                     : "bg-muted"
                 )}
               >
-                {message.role === " user" ? <UserAvatar /> : <BotAvatar />}
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                 <p className="text-sm">{message.content}</p>
               </div>
             ))}
