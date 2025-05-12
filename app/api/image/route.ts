@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       return new NextResponse("OpenAI API key not confiqured", { status: 500 });
 
     const result = await openai.images.generate({
-      model: "gpt-4o-mini",
+      model: "gpt-image-1",
       prompt,
       size:resolution,
       n:parseInt(amount, 10)
