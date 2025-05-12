@@ -26,7 +26,11 @@ export async function POST(req: Request) {
       size:resolution,
       n:parseInt(amount, 10)
     });
-    return NextResponse.json(result.data);
+
+    if (!result.data || result.data.length === 0) {
+      return new NextResponse("No data returned from OpenAI", { status: 500 });
+    }
+    return NextResponse.json(result.data[0].b64_json);  /// based on the openAI documentation
   } catch (error) {
     console.log("Image Error: ", error);
     return new NextResponse("Internal error", { status: 500 });
