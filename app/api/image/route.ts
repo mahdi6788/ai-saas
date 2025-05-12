@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       model: "dall-e-3",
       prompt,
       size:resolution,
-      n:amount,
+      n:1,
     });
 
     if (!result.data || result.data.length === 0) {
