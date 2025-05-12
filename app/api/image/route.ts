@@ -24,7 +24,8 @@ export async function POST(req: Request) {
       model: "gpt-image-1",
       prompt,
       size:resolution,
-      n:amount
+      n:amount,
+      response_format: "b64_json"
     });
 
     if (!result.data || result.data.length === 0) {
@@ -33,6 +34,11 @@ export async function POST(req: Request) {
     return NextResponse.json(result.data); 
   } catch (error) {
     console.log("Image Error: ", error);
+    // get detailed server logs in Vercel
+     if (error instanceof OpenAI.APIError) {
+    console.error("Status:", error.status);
+    console.error("Details:", error.error);
+  }
     return new NextResponse("Internal error", { status: 500 });
   }
 }
