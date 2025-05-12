@@ -45,11 +45,11 @@ export default function ImagePage() {
       // console.log(values)
       const response = await axios.post("/api/image", values);
 
-      const base64Strings = response.data.map(
-        (image: { b64_json: string }) => image.b64_json
-      );
+      // const base64Strings = response.data.map(image => image.url)
 
-      setImages(base64Strings);
+      const urls = await response.data
+
+      setImages(urls);
       form.reset();
     } catch (error) {
       console.log(error);
@@ -165,14 +165,14 @@ export default function ImagePage() {
           )}
           {/* flex-col-reverse : first show the latest message that is from bot and then newest user prompt and etc. */}
           <div className="grid grid-cols-1, md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
-            {images.map((base64String) => (
-              <Card key={base64String} className="rounded-lg overflow-hidden">
+            {images.map((url) => (
+              <Card key={url} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
-                  <Image alt="Image" src={`data:image/png;base64,${base64String}`} fill />
+                  <Image alt="Image" src={url} fill />
                 </div>
                 <CardFooter className="p-2">
                   <Button
-                    onClick={() => window.open(base64String)}
+                    onClick={() => window.open(url)}
                     variant="secondary"
                     className="w-full "
                   >
