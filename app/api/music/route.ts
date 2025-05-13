@@ -1,3 +1,4 @@
+import { checkApiLimit, increaseApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
@@ -8,10 +9,13 @@ const replicate = new Replicate({
 
 export async function POST(req: Request) {
   try {
-    const { prompt } = await req.json();
     const { userId } = await auth();
     if (!userId) return new NextResponse("Unathorized", { status: 401 });
+    const { prompt } = await req.json();
     if (!prompt) return new NextResponse("Prompt is required", { status: 400 });
+    const freeTrial = await checkApiLimit();
+    if (!freeTrial)
+      return new NextResponse("Free trial has expired", { status: 403 });
 
     const response = await replicate.run(
       "riffusion/riffusion:8cf61ea6c56afd61d8f5b9ffd14d7c216c0a93844ce2d82ac1c9ecc9c7f24e05",
@@ -26,6 +30,7 @@ export async function POST(req: Request) {
         },
       }
     );
+    await increaseApiLimit(); /// increase the amount of API usage
     return NextResponse.json(response);
   } catch (error) {
     console.log("Music Error: ", error);

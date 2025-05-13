@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.19.2",
     "@hookform/resolvers": "^5.0.1",
+    "@prisma/client": "^6.7.0",
     "@radix-ui/react-avatar": "^1.1.9",
     "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-label": "^2.1.6",
@@ -22,6 +23,7 @@
     "lucide-react": "^0.509.0",
     "next": "15.3.2",
     "openai": "^4.98.0",
+    "prisma": "^6.7.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.3",
