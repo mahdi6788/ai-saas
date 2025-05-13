@@ -14,6 +14,7 @@ import {
   VideoIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { FreeCounter } from "./free-counter";
 
 const routes = [
   {
@@ -59,7 +60,7 @@ const routes = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ apiLimitCount = 0 }: { apiLimitCount: number }) {
   const pathname = usePathname();
   return (
     <div className="flex flex-col space-y-4 py-4 h-full bg-[#111827] text-white">
@@ -98,6 +99,7 @@ export default function Sidebar() {
           ))}
         </div>
       </div>
+      <FreeCounter apiLimitCount = {apiLimitCount}/>
     </div>
   );
 }
