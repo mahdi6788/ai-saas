@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import Sidebar from "@/components/Sidebar";
 
-export default function MobileSidebar() {
+export default function MobileSidebar({apiLimitCount}:{apiLimitCount:number}) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -19,7 +19,7 @@ export default function MobileSidebar() {
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
         <SheetTitle hidden></SheetTitle>
-        <Sidebar />
+        <Sidebar apiLimitCount={apiLimitCount} />
       </SheetContent>
     </Sheet>
   );

@@ -15,7 +15,7 @@ export default async function DashboardLayout({
         <Sidebar apiLimitCount={apiLimitCount} />
       </div>
       <main className="md:pl-72">
-        <Navbar/>
+        <Navbar apiLimitCount={apiLimitCount}/>
         {children}
       </main>
     </div>
