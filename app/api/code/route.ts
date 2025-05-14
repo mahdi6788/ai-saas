@@ -1,5 +1,4 @@
-import { MAX_FREE_COUNTS } from "@/constants";
-import { getApiLimitCount, increaseApiLimit } from "@/lib/api-limit";
+import { checkApiLimitCount, increaseApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
@@ -21,8 +20,8 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
     if (!messages)
       return new NextResponse("Message are required", { status: 400 });
-    const usedCount = await getApiLimitCount();
-    if (usedCount > MAX_FREE_COUNTS)
+    const checkCount = await checkApiLimitCount();
+    if (!checkCount)
       return new NextResponse("Free trial has expired", { status: 403 });
     if (!openai.apiKey)
       return new NextResponse("OpenAI API key not confiqured", { status: 500 });

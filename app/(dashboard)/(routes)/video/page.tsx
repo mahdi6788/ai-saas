@@ -36,12 +36,12 @@ export default function VideoPage() {
 
       const response = await axios.post("/api/video", values);
 
-      if (response?.status === 403) onOpen();
-
       setVideo(response.data[0]);
       form.reset();
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        onOpen();
+      }
     } finally {
       router.refresh();
     }

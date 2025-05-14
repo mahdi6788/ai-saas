@@ -1,5 +1,4 @@
-import { MAX_FREE_COUNTS } from "@/constants";
-import { getApiLimitCount, increaseApiLimit } from "@/lib/api-limit";
+import { checkApiLimitCount, increaseApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
@@ -14,8 +13,8 @@ export async function POST(req: Request) {
     const { userId } = await auth();
     if (!userId) return new NextResponse("Unathorized", { status: 401 });
     if (!prompt) return new NextResponse("Prompt is required", { status: 400 });
-    const usedCount = await getApiLimitCount();
-    if (usedCount > MAX_FREE_COUNTS)
+    const checkCount = await checkApiLimitCount();
+    if (!checkCount)
       return new NextResponse("Free trial has expired", { status: 403 });
 
     const response = await replicate.run(

@@ -36,12 +36,12 @@ export default function MusicPage() {
 
       const response = await axios.post("/api/music", values);
 
-      if (response?.status === 403) onOpen();
-
       setMusic(response.data.audio);
       form.reset();
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        onOpen();
+      }
     } finally {
       router.refresh();
     }
