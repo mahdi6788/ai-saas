@@ -11,7 +11,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="relative h-full">
-      <div className="hidden md:flex h-full w-72 flex-col fixed inset-y-0 z-[80] bg-gray-900">
+      <div className="hidden md:flex h-full w-72 flex-col fixed inset-y-0 bg-gray-900">
         <Sidebar apiLimitCount={apiLimitCount} />
       </div>
       <main className="md:pl-72">

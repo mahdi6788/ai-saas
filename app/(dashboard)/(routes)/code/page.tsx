@@ -18,8 +18,10 @@ import { Loader } from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/UserAvatar";
 import { BotAvatar } from "@/components/BotAvatar";
+import { useProModalStore } from "@/hooks/use-pro-modal-store";
 
 export default function CodePage() {
+  const {onOpen} = useProModalStore()
   const router = useRouter();
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
     []
@@ -46,6 +48,7 @@ export default function CodePage() {
         messages: newMessages,
       });
 
+      if (response?.status === 403) onOpen();
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error) {

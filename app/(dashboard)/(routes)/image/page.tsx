@@ -23,8 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
+import { useProModalStore } from "@/hooks/use-pro-modal-store";
 
 export default function ImagePage() {
+  const { onOpen } = useProModalStore();
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
 
@@ -47,8 +49,12 @@ export default function ImagePage() {
 
       // const base64Strings = response.data.map(image => image.url)
 
-      const images = await response.data
-      const b64_strings = images.map((image:{b64_json:string}) => image.b64_json)
+      if (response?.status === 403) onOpen();
+
+      const images = await response.data;
+      const b64_strings = images.map(
+        (image: { b64_json: string }) => image.b64_json
+      );
 
       setImages(b64_strings);
       form.reset();
@@ -169,11 +175,17 @@ export default function ImagePage() {
             {images.map((b64_string) => (
               <Card key={b64_string} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
-                  <Image alt="Image" src={`data:image/png;base64,${b64_string}`} fill />
+                  <Image
+                    alt="Image"
+                    src={`data:image/png;base64,${b64_string}`}
+                    fill
+                  />
                 </div>
                 <CardFooter className="p-2">
                   <Button
-                    onClick={() => window.open(`data:image/png;base64,${b64_string}`)}
+                    onClick={() =>
+                      window.open(`data:image/png;base64,${b64_string}`)
+                    }
                     variant="secondary"
                     className="w-full "
                   >

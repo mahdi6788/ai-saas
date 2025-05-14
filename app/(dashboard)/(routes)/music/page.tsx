@@ -14,8 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Empty } from "@/components/Empty";
 import { Loader } from "@/components/Loader";
+import { useProModalStore } from "@/hooks/use-pro-modal-store";
 
 export default function MusicPage() {
+  const { onOpen } = useProModalStore();
   const router = useRouter();
   const [music, setMusic] = useState<string>();
 
@@ -33,6 +35,8 @@ export default function MusicPage() {
       setMusic(undefined);
 
       const response = await axios.post("/api/music", values);
+
+      if (response?.status === 403) onOpen();
 
       setMusic(response.data.audio);
       form.reset();

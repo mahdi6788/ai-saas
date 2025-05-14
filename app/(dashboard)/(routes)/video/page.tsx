@@ -14,8 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Empty } from "@/components/Empty";
 import { Loader } from "@/components/Loader";
+import { useProModalStore } from "@/hooks/use-pro-modal-store";
 
 export default function VideoPage() {
+  const { onOpen } = useProModalStore();
   const router = useRouter();
   const [video, setVideo] = useState<string>();
 
@@ -33,6 +35,8 @@ export default function VideoPage() {
       setVideo(undefined);
 
       const response = await axios.post("/api/video", values);
+
+      if (response?.status === 403) onOpen();
 
       setVideo(response.data[0]);
       form.reset();
@@ -95,7 +99,10 @@ export default function VideoPage() {
           {/* flex-col-reverse : first show the latest message that is from bot and then newest user prompt and etc. */}
 
           {video && (
-            <video controls className="w-full mt-8 aspect-video rounded-lg border bg-black">
+            <video
+              controls
+              className="w-full mt-8 aspect-video rounded-lg border bg-black"
+            >
               <source src={video} />
             </video>
           )}
