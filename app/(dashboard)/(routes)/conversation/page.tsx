@@ -17,8 +17,10 @@ import { Loader } from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/UserAvatar";
 import { BotAvatar } from "@/components/BotAvatar";
+import { useProModalStore } from "@/hooks/use-pro-modal-store";
 
 export default function ConversationPage() {
+  const { onOpen } = useProModalStore();
   const router = useRouter();
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
     []
@@ -45,6 +47,7 @@ export default function ConversationPage() {
         messages: newMessages,
       });
 
+      if (response?.status === 403) onOpen();
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error) {
@@ -106,7 +109,7 @@ export default function ConversationPage() {
             <Empty label="No conversation started." />
           )}
           {/* flex-col-reverse : first show the latest message that is from bot and then newest user prompt and etc. */}
-          <div className="flex flex-col gap-y-4">   
+          <div className="flex flex-col gap-y-4">
             {messages.map((message) => (
               <div
                 key={message.content}
