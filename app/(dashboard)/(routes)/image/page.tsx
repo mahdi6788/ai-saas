@@ -49,8 +49,6 @@ export default function ImagePage() {
 
       // const base64Strings = response.data.map(image => image.url)
 
-      if (response?.status === 403) onOpen();
-
       const images = await response.data;
       const b64_strings = images.map(
         (image: { b64_json: string }) => image.b64_json
@@ -59,7 +57,9 @@ export default function ImagePage() {
       setImages(b64_strings);
       form.reset();
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        onOpen();
+      }
     } finally {
       router.refresh();
     }

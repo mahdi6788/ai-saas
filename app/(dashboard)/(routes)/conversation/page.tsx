@@ -47,11 +47,12 @@ export default function ConversationPage() {
         messages: newMessages,
       });
 
-      if (response?.status === 403) onOpen();
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response?.status === 403) {
+        onOpen();
+      }
     } finally {
       router.refresh();
     }
