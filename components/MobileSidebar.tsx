@@ -9,17 +9,23 @@ import {
 } from "@/components/ui/sheet";
 import Sidebar from "@/components/Sidebar";
 
-export default function MobileSidebar({apiLimitCount}:{apiLimitCount:number}) {
+export default function MobileSidebar({
+  apiLimitCount,
+  isPro,
+}: {
+  apiLimitCount: number;
+  isPro: boolean;
+}) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant={"ghost"} size={"icon"} className="md:hidden" >
+        <Button variant={"ghost"} size={"icon"} className="md:hidden">
           <Menu />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
         <SheetTitle hidden></SheetTitle>
-        <Sidebar apiLimitCount={apiLimitCount} />
+        <Sidebar apiLimitCount={apiLimitCount} isPro={isPro} />
       </SheetContent>
     </Sheet>
   );

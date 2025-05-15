@@ -60,7 +60,13 @@ const routes = [
   },
 ];
 
-export default function Sidebar({ apiLimitCount = 0 }: { apiLimitCount: number }) {
+export default function Sidebar({
+  apiLimitCount = 0,
+  isPro,
+}: {
+  apiLimitCount: number;
+  isPro: boolean;
+}) {
   const pathname = usePathname();
   return (
     <div className="flex flex-col space-y-4 py-4 h-full bg-[#111827] text-white">
@@ -99,7 +105,7 @@ export default function Sidebar({ apiLimitCount = 0 }: { apiLimitCount: number }
           ))}
         </div>
       </div>
-      <FreeCounter apiLimitCount = {apiLimitCount}/>
+      <FreeCounter apiLimitCount={apiLimitCount} isPro={isPro} />
     </div>
   );
 }

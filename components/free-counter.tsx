@@ -8,13 +8,15 @@ import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useProModalStore } from "@/hooks/use-pro-modal-store";
 
-export function FreeCounter({ apiLimitCount = 0 }: { apiLimitCount: number }) {
+export function FreeCounter({ apiLimitCount = 0, isPro }: { apiLimitCount: number, isPro:boolean }) {
   const { onOpen } = useProModalStore();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
   if (!mounted) return null;
+
+  if(isPro) return null
 
   return (
     <div className="px-3">

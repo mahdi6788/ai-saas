@@ -1,4 +1,5 @@
 import { checkApiLimitCount, increaseApiLimit } from "@/lib/api-limit";
+import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
@@ -18,8 +19,9 @@ export async function POST(req: Request) {
       return new NextResponse("Amount are required", { status: 400 });
     if (!resolution)
       return new NextResponse("Resolution are required", { status: 400 });
-    const checkCount = await checkApiLimitCount();
-    if (!checkCount)
+    const freeCount = await checkApiLimitCount();
+    const isPro = await checkSubscription();
+    if (!freeCount && !isPro)
       return new NextResponse("Free trial has expired", { status: 403 });
     if (!openai.apiKey)
       return new NextResponse("OpenAI API key not configured", { status: 500 });
@@ -35,7 +37,9 @@ export async function POST(req: Request) {
       return new NextResponse("No data returned from OpenAI", { status: 500 });
     }
 
-    await increaseApiLimit(); /// increase the amount of API usage
+    if (!isPro) {
+      await increaseApiLimit(); /// increase the amount of API usages
+    }
     return NextResponse.json(result.data);
   } catch (error) {
     console.log("Image Error: ", error);
