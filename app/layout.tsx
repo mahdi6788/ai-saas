@@ -10,6 +10,7 @@ import {
   // UserButton,
 } from "@clerk/nextjs";
 import { ModalProvider } from "@/components/ModalProvider";
+import { CrispChat } from "@/components/CrispChat";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <CrispChat/>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
