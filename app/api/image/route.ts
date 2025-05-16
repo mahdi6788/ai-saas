@@ -33,18 +33,6 @@ export async function POST(req: Request) {
       n: parseInt(amount),
     });
 
-    // const resp = await fetch('https://api.deepai.org/api/text2img', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'api-key': process.env.DEEPAI_API_KEY as string
-    //     },
-    //     body: JSON.stringify({
-    //         text: prompt as string,
-    //     })
-    // });
-    
-    // Check if response is OK
     if (!result) {
       console.error("API Error: No result returned from OpenAI API");
       return new Response("Failed to fetch image from API", { status: 500 });

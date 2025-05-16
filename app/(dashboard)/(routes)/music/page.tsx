@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 import Heading from "@/components/Heading";
 import { formSchema } from "./constants";
@@ -42,6 +43,11 @@ export default function MusicPage() {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
         onOpen();
       }
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || error.message
+          : String(error)
+      );
     } finally {
       router.refresh();
     }

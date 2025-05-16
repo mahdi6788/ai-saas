@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Empty } from "@/components/Empty";
 import { Loader } from "@/components/Loader";
 import { useProModalStore } from "@/hooks/use-pro-modal-store";
+import toast from "react-hot-toast";
 
 export default function VideoPage() {
   const { onOpen } = useProModalStore();
@@ -42,6 +43,11 @@ export default function VideoPage() {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
         onOpen();
       }
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || error.message
+          : String(error)
+      );
     } finally {
       router.refresh();
     }

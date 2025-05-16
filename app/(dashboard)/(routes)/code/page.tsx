@@ -19,9 +19,10 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/UserAvatar";
 import { BotAvatar } from "@/components/BotAvatar";
 import { useProModalStore } from "@/hooks/use-pro-modal-store";
+import toast from "react-hot-toast";
 
 export default function CodePage() {
-  const {onOpen} = useProModalStore()
+  const { onOpen } = useProModalStore();
   const router = useRouter();
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
     []
@@ -54,6 +55,11 @@ export default function CodePage() {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
         onOpen();
       }
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || error.message
+          : String(error)
+      );
     } finally {
       router.refresh();
     }

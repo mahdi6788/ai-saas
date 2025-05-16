@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
 import { useProModalStore } from "@/hooks/use-pro-modal-store";
+import toast from "react-hot-toast";
 
 export default function ImagePage() {
   const { onOpen } = useProModalStore();
@@ -46,7 +47,9 @@ export default function ImagePage() {
       setImages([]);
       const response = await axios.post("/api/image", values);
 
-      const imageUrl = await response.data.map((image:{url:string}) => image.url)
+      const imageUrl = await response.data.map(
+        (image: { url: string }) => image.url
+      );
 
       // const b64_strings = images.map(
       //   (image: { b64_json: string }) => image.b64_json
@@ -58,6 +61,11 @@ export default function ImagePage() {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
         onOpen();
       }
+      toast.error(
+        axios.isAxiosError(error)
+          ? error.response?.data?.message || error.message
+          : String(error)
+      );
     } finally {
       router.refresh();
     }
@@ -173,17 +181,11 @@ export default function ImagePage() {
             {images.map((image) => (
               <Card key={image} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
-                  <Image
-                    alt="Image"
-                    src={image}
-                    fill
-                  />
+                  <Image alt="Image" src={image} fill />
                 </div>
                 <CardFooter className="p-2">
                   <Button
-                    onClick={() =>
-                      window.open(image)
-                    }
+                    onClick={() => window.open(image)}
                     variant="secondary"
                     className="w-full "
                   >
