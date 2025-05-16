@@ -44,17 +44,15 @@ export default function ImagePage() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       setImages([]);
-      // console.log(values)
       const response = await axios.post("/api/image", values);
 
-      // const base64Strings = response.data.map(image => image.url)
+      const imageUrl = await response.data.map((image:{url:string}) => image.url)
 
-      const images = await response.data;
       // const b64_strings = images.map(
       //   (image: { b64_json: string }) => image.b64_json
       // );
 
-      setImages(images);
+      setImages(imageUrl);
       form.reset();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 403) {
