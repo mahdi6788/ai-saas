@@ -2,11 +2,11 @@ import { checkApiLimitCount, increaseApiLimit } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+// import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
 
 export async function POST(req: Request) {
   try {
@@ -23,31 +23,57 @@ export async function POST(req: Request) {
     const isPro = await checkSubscription();
     if (!freeCount && !isPro)
       return new NextResponse("Free trial has expired", { status: 403 });
-    if (!openai.apiKey)
-      return new NextResponse("OpenAI API key not configured", { status: 500 });
+    // if (!openai.apiKey)
+    //   return new NextResponse("OpenAI API key not configured", { status: 500 });
 
-    const result = await openai.images.generate({
-      model: "gpt-image-1",
-      prompt,
-      size: resolution,
-      n: parseInt(amount),
+    // const result = await openai.images.generate({
+    //   model: "gpt-image-1",
+    //   prompt,
+    //   size: resolution,
+    //   n: parseInt(amount),
+    // });
+
+    const resp = await fetch('https://api.deepai.org/api/text2img', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': process.env.DEEPAI_API_KEY as string
+        },
+        body: JSON.stringify({
+            text: prompt as string,
+        })
     });
+    
+    // Check if response is OK
+    if (!resp.ok) {
+      console.error("API Error:", resp.status, await resp.text());
+      return new Response("Failed to fetch image from API", { status: resp.status });
+    }
 
-    if (!result.data || result.data.length === 0) {
-      return new NextResponse("No data returned from OpenAI", { status: 500 });
+    // Attempt to parse JSON
+    let result;
+    try {
+      result = await resp.json();
+    } catch (error) {
+      console.log("ERROR:",error)
+      console.error("JSON Parse Error:", await resp.text());
+      return new Response("Invalid response from API", { status: 500 });
+    }
+
+    console.log("RESULT:", result);
+
+    if (!result || result.length === 0) {
+      return new Response("No image data returned", { status: 404 });
     }
 
     if (!isPro) {
       await increaseApiLimit(); /// increase the amount of API usages
     }
-    return NextResponse.json(result.data);
+
+    // Process and return result
+    return new NextResponse(JSON.stringify(result), { status: 200 });
   } catch (error) {
-    console.log("Image Error: ", error);
-    // get detailed server logs in Vercel
-    if (error instanceof OpenAI.APIError) {
-      console.error("Status:", error.status);
-      console.error("Details:", error.error);
-    }
-    return new NextResponse("Internal error", { status: 500 });
+    console.error("Server Error:", error);
+    return new Response("Internal server error", { status: 500 });
   }
 }
