@@ -1,4 +1,4 @@
-# AI SaaS Platform
+# Genius
 
 ![Project Banner](/public/images/LOGO192.png)
 
@@ -7,7 +7,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-5.0-blue)](https://www.prisma.io/)
 
-A modern AI Software-as-a-Service platform offering multiple AI capabilities through a subscription-based model. Built with Next.js, TypeScript, Prisma, and Stripe integration.
+A modern AI SaaS platform offering multiple AI capabilities through a subscription-based model. Built with Next.js, TypeScript, Prisma, and Stripe integration.
 
 ## 🌟 Features
 
