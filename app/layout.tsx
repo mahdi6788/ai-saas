@@ -1,26 +1,19 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ModalProvider } from "@/components/ModalProvider";
-import { CrispChat } from "@/components/CrispChat";
 import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { ModalProvider } from "@/components/ModalProvider";
+import { CrispChat } from "@/components/CrispChat";
+import { geistMono, geistSans } from "@/lib/fonts";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "AI SaaS Genius",
   description:
-    "PWA provides you with AI capabilities to generate chat, code, image, music, and video easily",
+    "The PWA that provides you with AI capabilities to generate chat, code, image, music, and video easily",
 };
+
 
 export default function RootLayout({
   children,
@@ -32,7 +25,7 @@ export default function RootLayout({
       <html lang="en">
         <CrispChat />
         <head>
-          <Link rel="manifest" href="/manifest.json" />
+          <Link rel="manifest" href="/manifest.ts" />
           <meta name="theme-color" content="#000000" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Link href="/images/LOGO192.png" />
