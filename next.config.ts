@@ -29,9 +29,6 @@ const pwaConfig = withPWA({
       },
     },
   ],
-  fallbacks: {
-    document: "/offline.html", // Serve offline.html when app is offline
-  },
 });
 
 const nextConfig: NextConfig = {
