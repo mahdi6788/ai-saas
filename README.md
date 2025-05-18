@@ -1,6 +1,6 @@
 # AI SaaS Platform
 
-![Project Banner](/public/images/LOGO.jpg)
+![Project Banner](/public/images/LOGO512.png)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
